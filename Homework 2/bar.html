@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bar</title>
+    <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+</head>
+
+<body>
+    
+    <div id="div1"></div>
+    <script src="data/pop.json"></script>
+    <script>
+        var trace1 = {
+            x: AmericaPop.date,
+            y: AmericaPop.pop,
+            mode: "markers",
+            type: "bar",
+            marker: {
+                color: AmericaPop.scatterColor
+            }
+        };
+
+        var layout = {
+            title: "U.S Population 1900-1999"
+        }
+
+        var data = [trace1];
+
+        Plotly.newPlot("div1", data, layout);
+    </script>
+</body>
+</html>
