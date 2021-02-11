@@ -8,11 +8,49 @@
 </head>
 
 <style>
+    #slider {
+        position: relative;
+        width: 50%;
+        left: 45%;
+    }
+    
     #div2 {
         position:relative;
         width: 50%;
-        left: 25%;
+        left: 48.5%;
         font-size: 20px;
+    }
+
+    #button {
+        position:relative;
+        width: 50%;
+        left: 46.5%;
+        font-size: 20px;
+        padding-bottom: 50px;
+    }
+
+    #population {
+        position:relative;
+        width: 50%;
+        left: 41%;
+        font-size: 20px;
+        padding-bottom: 50px;
+    }
+
+    #button2 {
+        position:relative;
+        width: 50%;
+        left: 42%;
+        font-size: 20px;
+        padding-bottom: 50px;
+    }
+
+    #populationChange {
+        position:relative;
+        width: 50%;
+        left: 38%;
+        font-size: 20px;
+        padding-bottom: 50px;
     }
 </style>
 
@@ -30,7 +68,7 @@
             marker: {
                 color: AmericaPop.scatterColor
             }
-        };
+        };  
 
         var layout1 = {
             polar: {
@@ -40,21 +78,93 @@
                     tickvals: [0, 36, 72, 108, 144, 180, 216, 252, 288, 324],
                     direction: "clockwise",
                     rotation: 0
+                },
+                radialaxis: {
+                    autorange: false,
+                    range: [0,275000000]
                 }
             },
             showlegend: false,
-            title: "U.S Population 1900-1999"
+            title: "U.S Population 1900-1999",
+            hovermode: 'closest'
+        };
+
+        var year = 0
+
+        mySlice = function(daValue){
+            trace1.theta = AmericaPop.theta.slice(0,daValue)
+            trace1.r = AmericaPop.pop.slice(0, daValue)
+            trace1.marker.color = AmericaPop.scatterColor.slice(0, daValue)
+            makePlot()
+            if(daValue >= 1) {
+                document.getElementById("year").innerHTML = AmericaPop.date[daValue -= 1],
+                year = Number(AmericaPop.date[daValue])
+            }
+            else(document.getElementById("year").innerHTML = "")
+        }
+        
+        makePlot = function(){
+            data = [trace1];
+            Plotly.newPlot("div1", data, layout1)
         }
 
-        var data = [trace1];
+        getPop = function(){
+            if(year > 1900){
+                var n = AmericaPop.pop[year - 1900] / 1000000
+                document.getElementById("population").innerHTML = 'The population was '+n.toFixed(2) + " million"
+            } else {
+                var n = AmericaPop.pop[year] / 1000000
+                document.getElementById("population").innerHTML = 'The population was '+n.toFixed(2) + " million"
+            }
+        }
 
-        Plotly.newPlot("div1", data, layout1);
+        popChange = function(){
+            if(year > 1900){
+            var y1 = AmericaPop.pop[year - 1900] / 1000000
+            var y2 = AmericaPop.pop[year - 1901] / 1000000
+            var y3 = y1.toFixed(2)
+            var y4 = y2.toFixed(2)
+            var n = y3 - y4
+            document.getElementById("population change").innerHTML = "The population grew " + n.toFixed(2) + " million from the previous year"
+            } else {
+            var y1 = AmericaPop.pop[year] / 1000000
+            var y2 = AmericaPop.pop[year - 1] / 1000000
+            var y3 = y1.toFixed(2)
+            var y4 = y2.toFixed(2)
+            var n = y3 - y4
+            document.getElementById("population change").innerHTML = "The population grew " + n.toFixed(2) + " million from the previous year"
+            }
+            
+        }
+
+        makePlot()
+
     </script>
 
+
+
+    <div id="slider">
+        <input type="range" min="0" max="100" value="1" class="slider" oninput="mySlice(this.value)">
+    </div>
+
     <div id="div2">
-        <p>
-            I think it would be pretty cool if I could add a click function so that clicking on a specific bar would show the year associated with that bar. Hovering already shows the r and theta values for the bar, but the labels on the outside of the graph are spaced out enough that I think it would useful to click each bar to match population numbers with years directly.
-        </p>
+        <p id="year"></p>
+    </div>
+
+    <div id="button">
+        <button onclick="getPop()">Get Population</button>
+    </div>
+
+    <div id="population">
+        <p id="population"></p>
+    </div>
+
+    <div id = "button2">
+        <button onclick="popChange()">Population Growth From Previous Year</button>
+    </div>
+
+    <div id="populationChange">
+        <p id="population change"></p>
     </div>
 
     <div id="div3"></div>
@@ -101,4 +211,4 @@
         Plotly.newPlot("div4", data, layout3);
     </script>
 </body>
-</html>
+</html> 
