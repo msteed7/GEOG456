@@ -3,7 +3,7 @@
         <title>Cherry Trees at UNC</title>
         <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" integrity="sha512-xodZBNTC5n17Xt2atTPuE1HxjVMSvLVW9ocqUKLsCC5CXdbqCmblAshOMAS6/keqq/sMZMZ19scR4PsZChSR7A==" crossorigin=""/>
         <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js" integrity="sha512-XQoYMqMTK8LvdxXYG3nZ448hOEQiglfqkJs1NOQV44cWnUrBc8PkAOcXy20w0vlaXaVUearIOBhiXZ5V3ynxwA==" crossorigin=""></script>
-        <script src="/Users/msteed7/Documents/Documents - Michael’s MacBook Pro/College Stuff/Academics/GEOG 456/GEOG456 GitHub/Homework 4/Tutorial 4- Leaflet/leaflet_tutorial/data/flowering_cherries_4326.geojson"></script>
+        <script src="../data/flowering_cherries_4326.geojson"></script>
     </head>
     <body>
         <div id="mapid"></div>
@@ -23,21 +23,21 @@
             }).addTo(map);
 
             var cherryicon = L.icon({
-                iconUrl: '/Users/msteed7/Documents/Documents - Michael’s MacBook Pro/College Stuff/Academics/GEOG 456/GEOG456 GitHub/Homework 4/Tutorial 4- Leaflet/leaflet_tutorial/tree-png-719.png',
+                iconUrl: '../flowers-icon-png-2125.png',
                 iconSize: [50,50],
                 iconAnchor: [20,50],
                 popupAnchor: [0,0]
             });
 
             var cherryicon1 = L.icon({
-                iconUrl: '/Users/msteed7/Documents/Documents - Michael’s MacBook Pro/College Stuff/Academics/GEOG 456/GEOG456 GitHub/Homework 4/Tutorial 4- Leaflet/leaflet_tutorial/flowers-icon-png-2125.png',
+                iconUrl: '../tree-png-719.png',
                 iconSize: [50,50],
                 iconAnchor: [20,50],
                 popupAnchor: [0,0]
             });
 
             var cherryicon2 = L.icon({
-                iconUrl: '/Users/msteed7/Desktop/tree-png-719.png',
+                iconUrl: '../flowers-icon-png-2125.png',
                 iconSize: [50,50],
                 iconAnchor: [20,50],
                 popupAnchor: [0,0]
