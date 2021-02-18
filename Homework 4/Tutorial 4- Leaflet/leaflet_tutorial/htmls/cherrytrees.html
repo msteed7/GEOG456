@@ -1,0 +1,90 @@
+<html>
+    <head>
+        <title>Cherry Trees at UNC</title>
+        <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" integrity="sha512-xodZBNTC5n17Xt2atTPuE1HxjVMSvLVW9ocqUKLsCC5CXdbqCmblAshOMAS6/keqq/sMZMZ19scR4PsZChSR7A==" crossorigin=""/>
+        <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js" integrity="sha512-XQoYMqMTK8LvdxXYG3nZ448hOEQiglfqkJs1NOQV44cWnUrBc8PkAOcXy20w0vlaXaVUearIOBhiXZ5V3ynxwA==" crossorigin=""></script>
+        <script src="/Users/msteed7/Documents/Documents - Michael’s MacBook Pro/College Stuff/Academics/GEOG 456/Tutorial 4- Leaflet/leaflet_tutorial/data/flowering_cherries_4326.geojson"></script>
+    </head>
+    <body>
+        <div id="mapid"></div>
+        <style>
+            #mapid {
+                width: 50%;
+                height: 50%;
+                left: 25%;
+            }
+        </style>
+
+        <script>
+            var map = L.map('mapid').setView([35.91, -79.05], 17);
+
+            L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+            }).addTo(map);
+
+            var cherryicon = L.icon({
+                iconUrl: '/Users/msteed7/Desktop/tree-png-719.png',
+                iconSize: [50,50],
+                iconAnchor: [20,50],
+                popupAnchor: [0,0]
+            });
+
+            var cherryicon1 = L.icon({
+                iconUrl: '/Users/msteed7/Desktop/flowers-icon-png-2125.png',
+                iconSize: [50,50],
+                iconAnchor: [20,50],
+                popupAnchor: [0,0]
+            });
+
+            var cherryicon2 = L.icon({
+                iconUrl: '/Users/msteed7/Desktop/tree-png-719.png',
+                iconSize: [50,50],
+                iconAnchor: [20,50],
+                popupAnchor: [0,0]
+            });
+
+            var customPopup = "Chapel Hill's cherry trees are beautiful! <br/><img src='https://justinsomnia.org/images/chapel-hill-pink-flowering-tree.jpg' width='200px'/>";
+
+            cherrymarkers = L.geoJSON(cherrytrees, {
+                pointToLayer: function (feature, latlng) {
+                    return L.marker(latlng, {icon: cherryicon});
+                }
+            })
+            .bindPopup(customPopup)
+            .addTo(map);
+
+            cherrymarkers1 = L.geoJSON(cherrytrees, {
+                pointToLayer: function (feature, latlng) {
+                    return L.marker(latlng, {icon: cherryicon1});
+                }
+            })
+            .bindPopup(customPopup);
+
+            cherrymarkers2 = L.geoJSON(cherrytrees, {
+                pointToLayer: function (feature, latlng) {
+                    return L.marker(latlng, {icon: cherryicon2});
+                }
+            })
+            .bindPopup(customPopup);
+
+            map.addLayer(cherrymarkers);
+
+            var theMarker = 1;
+            
+            function onClick() {
+                if (theMarker = 1) {
+                    map.removeLayer(cherrymarkers);
+                    map.addLayer(cherrymarkers1);
+                    theMarker = 0;
+                } else {
+                    map.removeLayer(cherrymarkers1);
+                    map.addLayer(cherrymarkers2);
+                    theMarker = 1;
+                }
+            };
+
+            map.on('click', onClick);
+
+        </script>
+    </body>
+</html>

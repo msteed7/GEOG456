@@ -1,0 +1,73 @@
+<html>
+    <head>
+        <title>My First Leaflet Map</title>
+        <link rel="stylesheet" href="https://unpkg.com/leaflet@1.6.0/dist/leaflet.css" integrity="sha512-
+        xwE/Az9zrjBIphAcBb3F6JVqxf46+CDLwfLMHloNu6KEQCAWi6HcDUbeOfBIptF7tcCzusKFjFw2yuvEp
+        DL9wQ==" crossorigin=""/>
+        <script src="https://unpkg.com/leaflet@1.6.0/dist/leaflet.js" integrity="sha512-
+        gZwIG9x3wUXg2hdXF6+rVkLF/0Vi9U8D2Ntg4Ga5I5BZpVkVxlJWbSQtXPSiUTtC0TjtGOmxa1AJPuV0C
+        Pthew==" crossorigin=""></script>
+        <script src="/Users/msteed7/Documents/Documents - Michael’s MacBook Pro/College Stuff/Academics/GEOG 456/Tutorial 4- Leaflet/leaflet_tutorial/data/other_data/old_well_4326 copy.geojson"></script>
+    </head>
+    <body>
+        <div id="mapid"></div>
+        <style>
+            #mapid {
+                width: 900px;
+                height: 500px;
+            }
+        </style>
+
+        <script>
+            // this means that the following lines will be script
+            // (it could also point to an external script file)
+
+            var map = L.map('mapid').setView([35.91, -79.05], 17); // you can change the zoom
+
+            // This line is creating the variable map by initializing the L.map class (a Leaflet class) with the mapid element that we created before. setView is a method that can be applied to the class L.map: you can give it a latitude, longitude, and a zoom. The higher the values of the zoom, the finer the initial scale of the map.
+
+            L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'}).addTo(map);
+
+            //L.tileLayer can display a tile layer. You can check out other tile layer examples at https://leaflet-extras.github.io/leaflet-providers/preview/. The location of the tile layer needs to be in single quotes. You can also indicate the attribution for that layer. In this example we used the Open StreetMap attribution. The '&copy; <a> and the other information you see here is HTML code adding a copyright sign, and making a hyperlink to OpenStreetMap.
+            // At the end we include .addTo(map), which is indicating to add the tile layer to the variable map.
+
+            L.marker([35.911271, -79.049807]).addTo(map)
+            .bindPopup('Hey I am at Carolina Hall 322') // you can change the message
+            .openPopup();
+            
+            L.geoJSON(uncwell).addTo(map)
+
+            // create custom icon variable
+            
+            var uncIcon = L.icon({ // notice the L.icon which is a Leaflet object with properties
+                iconUrl: 'https://faopharmacy.unc.edu/files/2018/04/Old-Well-Icon-Example.png',
+                // this points to a jpg image obtained from the internet
+                iconSize: [50,50], // size of the icon
+                popupAnchor: [0,0] // where the icon is located relative to the latitude/longitutde of the point
+            });
+
+            // you could change the iconURL, iconSize, and popupAnchor to see how the map changes
+
+            // create an HTML variable that will pop up with a UNC well photo
+
+            var customPopup = "UNC Well<br/><img src=''https://global.unc.edu/files/2020/02/spring_4_09__12_054-768x511.jpg' width='100px'/>";
+
+            // you could change the https link to another picture.
+            // you could change the 100px to other values like 50px or 400px to see what happens
+
+            // the following line should go at the end, before script closing tag:
+
+            L.geoJSON(uncwell, { // We provide uncwell as a property of object L.geoJSON
+                pointToLayer: function (feature, latlng) { // Since the object L.geoJSON doesn't accept info about icon style, we have to go deeper inside the object to add style. We use the pointToLayer option and create a function that requres a feature and a latlng
+                    return L.marker(latlng, {icon: uncIcon}); // return is a JavaScript statement whose purpose is to return something from the function in which it appears. Here, it returns an object of type L.marker located at latlng, with the property "icon" set to uncIcon.
+                }
+            })
+            .bindPopup(customPopup) // Using the method bindPopup (on the object of type L.geoJSON) and declaring to use variable customPopup
+            .addTo(map); // Finally using the addTo method (on the object of type L.geoJSON) to add all this to the map
+
+        </script>
+
+        This is not as hard as I thought.
+
+    </body>
+</html>
