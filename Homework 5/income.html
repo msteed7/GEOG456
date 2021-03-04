@@ -1,0 +1,95 @@
+<html>
+    <head>
+        <title>U.S Income</title>
+        <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" integrity="sha512-xodZBNTC5n17Xt2atTPuE1HxjVMSvLVW9ocqUKLsCC5CXdbqCmblAshOMAS6/keqq/sMZMZ19scR4PsZChSR7A==" crossorigin=""/>
+        <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js" integrity="sha512-XQoYMqMTK8LvdxXYG3nZ448hOEQiglfqkJs1NOQV44cWnUrBc8PkAOcXy20w0vlaXaVUearIOBhiXZ5V3ynxwA==" crossorigin=""></script>
+        <script src="data/Cessions2.geojson"></script>
+    </head>
+
+    <style>
+        #mapid {
+            width: 100%;
+            height: 500px;
+        }
+    </style>
+    
+    <body>
+        <h3 id = "daYear">Year</h3>
+        <input type="range" name="year" min="1800" max="1900" oninput="moveSlider(this.value)">
+        <button onclick='geojson.setStyle({color: getRandomColor()})'>Click me!</button>
+
+        <div id="mapid"></div>
+
+        <h3 id = "totalAcres">Total Acres</h3>
+
+        <script>
+            var mymap = L.map('mapid').setView([35, -84], 5);
+            
+            L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                maxZoom: 19,
+                attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+            }).addTo(mymap);
+
+            var totalAcres = 0;
+
+            function myStyle(feature) {
+                var acres = feature.properties.Cessions_Total_Acres;
+                var year = feature.properties.Cessions_Yr_US_Acquire;
+                year = parseInt(year);
+                if (acres == "na") {
+                    totalAcres = totalAcres += 0;
+                    return {
+                        color: "rgba(0,0,0,0)"
+                    };
+                    //console.log(3);
+                } else {
+                    acres = parseInt(acres.replace(/,/g,''));
+                    if (year < myCurrentSelectionYear) {
+                        totalAcres = totalAcres += acres;
+                        //console.log(1);
+                        console.log(totalAcres);
+                        displayNum = totalAcres / 1000000;
+                        document.getElementById('totalAcres').innerHTML = "Acquired: " + displayNum.toFixed(2) + " million total acres of land";
+                    } else {
+                        totalAcres = totalAcres += 0;
+                        //console.log(2);
+                    };
+                    return {
+                        color: getColor(feature.properties.Cessions_Yr_US_Acquire),
+                        weight: .25,
+                        opacity: 0.65
+                    };
+                };
+            };
+
+            function getColor(d) {
+                return d < myCurrentSelectionYear ? "red":
+                            "rgba(0,0,0,0)";
+            };
+
+            var geojson = L.geoJSON(cessions, {style: myStyle}).addTo(mymap);
+
+            function getRandomColor() {
+                var letters = '0123456789ABCDEF';
+                var color = '#';
+                for (var i = 0; i < 6; i++) {
+                    color += letters[Math.floor(Math.random() * 16)];
+                }
+                return color
+            };
+
+            var myCurrentSelectionYear = 1800;
+                
+            function moveSlider(value) {
+                document.getElementById('daYear').innerHTML = "Year: " + value
+                myCurrentSelectionYear = value
+                geojson.resetStyle()
+                totalAcres = 0;
+            };
+
+            moveSlider(myCurrentSelectionYear)
+
+        </script>
+    </body>
+
+</html>
